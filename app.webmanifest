@@ -1,0 +1,18 @@
+{
+  "name": "ZAPP'EM Scam Shield",
+  "short_name": "ZAPP'EM",
+  "description": "One-button scam scanning, shared blocklist, Zapper Score, and privacy-safe report packages.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#08090c",
+  "theme_color": "#08090c",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

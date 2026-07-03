@@ -1,0 +1,1147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08090c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ZAPP'EM">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="/app.webmanifest">
+  <title>ZAPP'EM Scam Shield</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #08090c;
+      --panel: #11141b;
+      --panel-2: #171b24;
+      --text: #f6f7fb;
+      --muted: #9aa3b2;
+      --red: #ff3131;
+      --yellow: #ffd029;
+      --green: #35d07f;
+      --line: #2b3140;
+      --shadow: 0 18px 60px rgba(0, 0, 0, .45);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(255, 49, 49, .22), transparent 34rem),
+        linear-gradient(135deg, #08090c, #0d1118 55%, #120808);
+      color: var(--text);
+    }
+
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.3rem, 7vw, 5.5rem);
+      line-height: .88;
+      letter-spacing: 0;
+    }
+
+    .tagline {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .badge {
+      border: 1px solid rgba(255, 208, 41, .5);
+      color: var(--yellow);
+      border-radius: 999px;
+      padding: 9px 13px;
+      white-space: nowrap;
+      background: rgba(255, 208, 41, .08);
+      font-weight: 800;
+    }
+
+    section {
+      background: rgba(17, 20, 27, .92);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .scanner,
+    .results,
+    .blocklist {
+      padding: 18px;
+    }
+
+    label,
+    .section-title {
+      display: block;
+      color: var(--muted);
+      font-size: .82rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    textarea,
+    input {
+      width: 100%;
+      border: 1px solid #394150;
+      border-radius: 8px;
+      background: #090b10;
+      color: var(--text);
+      font: inherit;
+      padding: 13px;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 210px;
+      resize: vertical;
+    }
+
+    .drop-zone {
+      margin-bottom: 14px;
+      border: 1px dashed #596274;
+      border-radius: 8px;
+      background: #0b0d12;
+      padding: 14px;
+    }
+
+    .drop-zone.dragover {
+      border-color: var(--yellow);
+      background: rgba(255, 208, 41, .08);
+    }
+
+    .file-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .file-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      border-radius: 8px;
+      background: #252b37;
+      color: var(--text);
+      padding: 0 14px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .file-row input {
+      width: min(100%, 22rem);
+      border: 1px solid #394150;
+      background: #08090c;
+      padding: 10px;
+    }
+
+    .screenshot-preview {
+      display: none;
+      width: 100%;
+      max-height: 240px;
+      object-fit: contain;
+      margin-top: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #050609;
+    }
+
+    textarea:focus,
+    input:focus {
+      border-color: var(--yellow);
+      box-shadow: 0 0 0 3px rgba(255, 208, 41, .15);
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .status {
+      margin: 12px 0 0;
+      border: 1px solid rgba(255, 208, 41, .35);
+      border-radius: 8px;
+      background: rgba(255, 208, 41, .08);
+      color: #ffe58a;
+      padding: 12px;
+      font-weight: 800;
+    }
+
+    button {
+      border: 0;
+      border-radius: 8px;
+      min-height: 52px;
+      padding: 0 16px;
+      color: #08090c;
+      font: inherit;
+      font-weight: 950;
+      cursor: pointer;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .action-link {
+      display: grid;
+      place-items: center;
+      text-decoration: none;
+      border-radius: 8px;
+      min-height: 52px;
+      padding: 0 16px;
+      color: #08090c;
+      font: inherit;
+      font-weight: 950;
+      cursor: pointer;
+    }
+
+    .action-link:active {
+      transform: translateY(1px);
+    }
+
+    .scan-btn {
+      background: var(--yellow);
+    }
+
+    .zap-btn {
+      background: var(--red);
+      color: #fff;
+    }
+
+    .not-scam-btn {
+      background: var(--green);
+      color: #06110b;
+    }
+
+    .mode-toggle {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .fallback-result,
+    .fallback-zap {
+      display: none;
+      margin-top: 16px;
+      border-radius: 8px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: #0b0d12;
+    }
+
+    #showScan:checked ~ .fallback-result {
+      display: block;
+      border-color: rgba(255, 208, 41, .55);
+      box-shadow: 0 0 0 4px rgba(255, 208, 41, .1);
+    }
+
+    #showZap:checked ~ .fallback-zap {
+      display: grid;
+      place-items: center;
+      min-height: 280px;
+      text-align: center;
+      border-color: rgba(255, 49, 49, .8);
+      background:
+        repeating-linear-gradient(45deg, rgba(255, 49, 49, .14) 0 8px, transparent 8px 16px),
+        #0b0d12;
+      animation: flash .68s steps(2, end) 6;
+    }
+
+    .ghost-btn {
+      background: #252b37;
+      color: var(--text);
+    }
+
+    .score-card {
+      display: grid;
+      grid-template-columns: 128px 1fr;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .meter {
+      width: 128px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background:
+        conic-gradient(var(--red) calc(var(--score, 0) * 1%), #252b37 0),
+        #252b37;
+      box-shadow: inset 0 0 0 10px #0b0d12;
+    }
+
+    .meter span {
+      width: 86px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #10131a;
+      font-size: 1.65rem;
+      font-weight: 950;
+    }
+
+    .verdict {
+      margin: 0;
+      font-size: 1.85rem;
+      font-weight: 950;
+    }
+
+    .reason-list {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .reason-list li {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-2);
+      padding: 10px 12px;
+      color: #dce2ec;
+    }
+
+    .zap-screen {
+      margin-top: 16px;
+      min-height: 250px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border: 1px solid rgba(255, 49, 49, .45);
+      background:
+        repeating-linear-gradient(45deg, rgba(255, 49, 49, .09) 0 8px, transparent 8px 16px),
+        #0b0d12;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .zap-screen.active {
+      animation: flash .68s steps(2, end) 6;
+    }
+
+    .skull {
+      font-size: clamp(4.5rem, 16vw, 9rem);
+      line-height: 1;
+      filter: drop-shadow(0 0 24px rgba(255, 49, 49, .8));
+    }
+
+    .zap-copy {
+      margin: 6px 0 0;
+      font-size: clamp(1.35rem, 5vw, 2.5rem);
+      font-weight: 950;
+    }
+
+    .zap-sub {
+      margin: 8px auto 0;
+      max-width: 28rem;
+      color: var(--muted);
+    }
+
+    .blocklist {
+      margin-top: 20px;
+    }
+
+    .blocked-item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      background: #0b0d12;
+      margin-top: 10px;
+      word-break: break-word;
+    }
+
+    .blocked-item strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--yellow);
+    }
+
+    .privacy-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .privacy-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #0b0d12;
+      padding: 13px;
+    }
+
+    .privacy-card.good {
+      border-color: rgba(53, 208, 127, .45);
+    }
+
+    .privacy-card.bad {
+      border-color: rgba(255, 49, 49, .45);
+    }
+
+    .privacy-card h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .privacy-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: #dce2ec;
+    }
+
+    .report-targets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      border: 1px solid rgba(255, 208, 41, .35);
+      border-radius: 999px;
+      background: rgba(255, 208, 41, .08);
+      color: #ffe58a;
+      padding: 7px 10px;
+      font-weight: 800;
+      font-size: .85rem;
+    }
+
+    .queue-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .queue-item {
+      border: 1px solid rgba(255, 208, 41, .35);
+      border-radius: 8px;
+      background: #0b0d12;
+      padding: 12px;
+    }
+
+    .queue-item strong {
+      display: block;
+      color: var(--yellow);
+      margin-bottom: 5px;
+    }
+
+    .decision-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .decision-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #0b0d12;
+      padding: 14px;
+    }
+
+    .decision-card.active {
+      border-color: rgba(255, 208, 41, .85);
+      box-shadow: 0 0 0 4px rgba(255, 208, 41, .11);
+    }
+
+    .decision-card.blocked {
+      border-color: rgba(53, 208, 127, .75);
+      box-shadow: 0 0 0 4px rgba(53, 208, 127, .1);
+    }
+
+    .decision-card h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .decision-card p {
+      margin: 8px 0 0;
+      color: var(--muted);
+    }
+
+    .actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .next-step {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 11px;
+      background: var(--panel-2);
+      color: #dce2ec;
+    }
+
+    .dot {
+      width: 10px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--green);
+      flex: 0 0 auto;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #0b0d12;
+      padding: 12px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.5rem;
+      color: var(--yellow);
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: .82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .empty {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    @keyframes flash {
+      0%, 100% {
+        background-color: #0b0d12;
+      }
+
+      50% {
+        background-color: #ff3131;
+      }
+    }
+
+    @media (max-width: 820px) {
+      main {
+        width: min(100% - 22px, 680px);
+        padding: 16px 0 28px;
+      }
+
+      header,
+      .app,
+      .score-card,
+      .stats,
+      .privacy-grid,
+      .decision-grid,
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        display: grid;
+      }
+
+      .badge {
+        width: fit-content;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>ZAPP'EM</h1>
+      <p class="tagline">One button scam blocking, powered by a shared blocklist that gets stronger every time somebody hits ZAP.</p>
+      </div>
+      <div class="badge">Prototype v0.6 PWA</div>
+    </header>
+
+    <div class="app">
+      <section class="scanner" aria-labelledby="scanner-title">
+        <div class="drop-zone" id="dropZone">
+          <span class="section-title">Fastest Way</span>
+          <div class="file-row">
+            <span class="file-label">ADD SCREENSHOT</span>
+            <input id="screenshotInput" type="file" accept="image/*">
+            <span style="color: var(--muted);">Paste, drop, or upload a scam screenshot here.</span>
+          </div>
+          <img class="screenshot-preview" id="screenshotPreview" alt="Uploaded scam screenshot preview">
+        </div>
+
+        <label id="scanner-title" for="message">Paste the scam message, link, email subject, or phone number</label>
+        <textarea id="message" spellcheck="false">Payment Decliiiiiiined
+Your account has been inactive and over-limit. If you do not renew your storage plan by July 8, 2026, your data will be permanently deleted.</textarea>
+
+        <input class="mode-toggle" id="showScan" name="previewMode" type="radio">
+        <input class="mode-toggle" id="showZap" name="previewMode" type="radio">
+
+        <div class="controls">
+          <label class="action-link scan-btn" id="scanLink" for="showScan">SCAN IT</label>
+          <label class="action-link zap-btn" id="zapLink" for="showZap">ZAP</label>
+          <label class="action-link not-scam-btn" id="notScamLink">NOT A SCAM</label>
+        </div>
+        <p class="status" id="status">Ready. Hit SCAN IT, then ZAP.</p>
+
+        <div class="fallback-result">
+          <span class="section-title">Preview Mode Scan</span>
+          <p class="verdict" style="margin-bottom: 10px;">Scam smell: strong</p>
+          <ul class="reason-list">
+            <li>Payment or account problem claim</li>
+            <li>Scare deadline or threat language</li>
+            <li>Weird spelling or stretched words</li>
+            <li>Screenshot/text evidence ready to ZAP</li>
+          </ul>
+        </div>
+
+        <div class="fallback-zap">
+          <div>
+            <div class="skull" aria-hidden="true">☠</div>
+            <p class="zap-copy">ZAPPED. TRY SOMEBODY ELSE.</p>
+            <p class="zap-sub">Preview mode: this is what the user sees. The real app would now update the local and shared blocklists.</p>
+          </div>
+        </div>
+
+        <div class="actions" aria-label="What ZAPP'EM does next">
+          <div class="next-step"><span class="dot"></span><span>Block sender or source when your phone/email app allows it.</span></div>
+          <div class="next-step"><span class="dot"></span><span>Save scam fingerprint to your local blocklist.</span></div>
+          <div class="next-step"><span class="dot"></span><span>Send the fingerprint to the shared blocklist so everybody gets protected faster.</span></div>
+        </div>
+      </section>
+
+      <div>
+        <section class="results" aria-live="polite">
+          <span class="section-title">Scam Scan</span>
+          <div class="score-card">
+            <div class="meter" id="meter" style="--score: 0"><span id="score">0%</span></div>
+          <div>
+              <p class="verdict" id="verdict">Ready to scan</p>
+              <ul class="reason-list" id="reasons">
+                <li>Paste something sketchy and hit SCAN IT.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="results" style="margin-top: 16px;" aria-label="Zapper stats">
+          <span class="section-title">Zapper Scoreboard</span>
+          <div class="stats">
+            <div class="stat"><strong id="zapCount">0</strong><span>Total Zaps</span></div>
+            <div class="stat"><strong id="zapperScore">0</strong><span>Zapper Score</span></div>
+            <div class="stat"><strong id="protectedCount">0</strong><span>People Protected</span></div>
+          </div>
+        </section>
+
+        <section class="results" style="margin-top: 16px;" aria-label="Protection decision">
+          <span class="section-title">Protection Decision</span>
+          <p class="verdict" id="decisionTitle" style="font-size: 1.45rem;">Waiting for scan</p>
+          <div class="decision-grid">
+            <div class="decision-card" id="autoBlockCard">
+              <h3>Known Scam</h3>
+              <p>Auto-block or quarantine before the inbox.</p>
+            </div>
+            <div class="decision-card active" id="needsZapCard">
+              <h3>New Or Changed</h3>
+              <p>User sees it, hits ZAP, and teaches the shared blocklist.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="zap-screen" id="zapScreen" aria-live="polite">
+          <div>
+            <div class="skull" aria-hidden="true">☠</div>
+            <p class="zap-copy" id="zapCopy">Waiting on a target</p>
+            <p class="zap-sub" id="zapSub">When you hit ZAP, the scam gets filed, blocked where possible, and ignored from here on out.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <section class="blocklist">
+      <div style="display: flex; gap: 12px; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+        <span class="section-title" style="margin: 0;">Local + Shared Zapped List</span>
+        <button class="ghost-btn" id="clearButton" type="button">CLEAR LIST</button>
+      </div>
+      <div class="next-step" style="margin-top: 12px;">
+        <span class="dot"></span>
+        <span><strong>Community mode:</strong> in the real app, each ZAP uploads only the scam fingerprint, not your private message, so every user helps update the wall.</span>
+      </div>
+      <div id="blocklist"></div>
+    </section>
+
+    <section class="blocklist">
+      <span class="section-title">Privacy-Safe Report Package</span>
+      <div class="privacy-grid">
+        <div class="privacy-card good">
+          <h3>Keep For Blocking</h3>
+          <ul>
+            <li>Scam fingerprint</li>
+            <li>Suspicious link/domain</li>
+            <li>Visible sender or phone</li>
+            <li>Scam category and wording pattern</li>
+            <li>Confirmation count</li>
+          </ul>
+        </div>
+        <div class="privacy-card bad">
+          <h3>Do Not Store</h3>
+          <ul>
+            <li>User contacts</li>
+            <li>Private inbox contents</li>
+            <li>Payment details</li>
+            <li>Addresses or account numbers</li>
+            <li>Unneeded personal info</li>
+          </ul>
+        </div>
+      </div>
+      <div class="next-step" style="margin-top: 12px;">
+        <span class="dot"></span>
+        <span><strong>Report routing:</strong> each ZAP prepares the right report package for the service that can help stop it upstream.</span>
+      </div>
+      <div class="next-step" style="margin-top: 12px;">
+        <span class="dot"></span>
+        <span><strong>False-positive safety:</strong> if a user marks something Not A Scam, ZAPP'EM lowers confidence and sends that fingerprint to review.</span>
+      </div>
+      <div class="report-targets" id="reportTargets">
+        <span class="pill">ZAPP'EM shared blocklist</span>
+        <span class="pill">Gmail/Apple/carrier when matched</span>
+      </div>
+    </section>
+
+    <section class="blocklist">
+      <span class="section-title">Review Queue</span>
+      <div class="next-step">
+        <span class="dot"></span>
+        <span><strong>Trust rule:</strong> Not A Scam votes do not erase a block by themselves. They move the fingerprint to review so real messages can be saved and scammer abuse can be stopped.</span>
+      </div>
+      <div class="queue-grid" id="reviewQueue">
+        <p class="empty">No review items yet.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const message = document.querySelector("#message");
+    const scanButton = document.querySelector("#scanLink");
+    const zapButton = document.querySelector("#zapLink");
+    const notScamButton = document.querySelector("#notScamLink");
+    const clearButton = document.querySelector("#clearButton");
+    const dropZone = document.querySelector("#dropZone");
+    const screenshotInput = document.querySelector("#screenshotInput");
+    const screenshotPreview = document.querySelector("#screenshotPreview");
+    const status = document.querySelector("#status");
+    const score = document.querySelector("#score");
+    const meter = document.querySelector("#meter");
+    const verdict = document.querySelector("#verdict");
+    const reasons = document.querySelector("#reasons");
+    const zapScreen = document.querySelector("#zapScreen");
+    const zapCopy = document.querySelector("#zapCopy");
+    const zapSub = document.querySelector("#zapSub");
+    const blocklist = document.querySelector("#blocklist");
+    const zapCount = document.querySelector("#zapCount");
+    const zapperScore = document.querySelector("#zapperScore");
+    const protectedCount = document.querySelector("#protectedCount");
+    const reportTargets = document.querySelector("#reportTargets");
+    const reviewQueue = document.querySelector("#reviewQueue");
+    const decisionTitle = document.querySelector("#decisionTitle");
+    const autoBlockCard = document.querySelector("#autoBlockCard");
+    const needsZapCard = document.querySelector("#needsZapCard");
+
+    const checks = [
+      { label: "Scare deadline or threat language", weight: 22, test: text => /delete|deleted|loss|suspend|closed|inactive|over-limit|urgent|immediately|final notice/i.test(text) },
+      { label: "Payment or account problem claim", weight: 18, test: text => /payment|declined|renew|billing|invoice|storage plan|verify account/i.test(text) },
+      { label: "Weird spelling or stretched words", weight: 18, test: text => /(.)\1{4,}|decli{4,}ned|payrn|rnoney/i.test(text) },
+      { label: "Suspicious link or odd web address", weight: 18, test: text => /https?:\/\/|www\.|\.ru|\.top|\.click|\.zip|\.xyz|bit\.ly|tinyurl/i.test(text) },
+      { label: "Asks you to act outside the official app", weight: 14, test: text => /click|tap|open link|confirm|login|sign in|update now/i.test(text) },
+      { label: "Impersonates a known service", weight: 12, test: text => /apple|icloud|gmail|google|facebook|meta|paypal|usps|ups|fedex|amazon|trademark|domain/i.test(text) }
+    ];
+
+    let screenshotInfo = null;
+
+    function payload() {
+      return {
+        text: message.value.trim(),
+        screenshotName: screenshotInfo?.name || ""
+      };
+    }
+
+    async function apiPost(path, body) {
+      const response = await fetch(path, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      if (!response.ok) throw new Error(`API failed: ${response.status}`);
+      return response.json();
+    }
+
+    async function apiGet(path) {
+      const response = await fetch(path);
+      if (!response.ok) throw new Error(`API failed: ${response.status}`);
+      return response.json();
+    }
+
+    async function renderReviewQueue() {
+      try {
+        const response = await apiGet("/api/review-queue");
+        if (!response.items.length) {
+          reviewQueue.innerHTML = '<p class="empty">No review items yet.</p>';
+          return;
+        }
+
+        reviewQueue.innerHTML = response.items.map(item => `
+          <div class="queue-item">
+            <strong>${item.target}</strong>
+            <span>${item.notScamVotes || 0} Not A Scam vote${(item.notScamVotes || 0) === 1 ? "" : "s"} | trust weight ${item.notScamWeight || 0}</span>
+            <div style="margin-top: 6px; color: var(--muted);">${item.reviewReason || "Needs review before changing global block behavior."}</div>
+          </div>
+        `).join("");
+      } catch {
+        reviewQueue.innerHTML = '<p class="empty">Start the v0.6 server to load review queue items.</p>';
+      }
+    }
+
+    function getStoredList() {
+      return JSON.parse(localStorage.getItem("zappem-blocklist") || "[]");
+    }
+
+    function setStoredList(items) {
+      localStorage.setItem("zappem-blocklist", JSON.stringify(items));
+    }
+
+    function fingerprint(text) {
+      const link = text.match(/https?:\/\/[^\s]+|www\.[^\s]+/i)?.[0];
+      const email = text.match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i)?.[0];
+      const phone = text.match(/\+?\d[\d\s().-]{7,}\d/)?.[0];
+      const firstLine = text.split("\n").map(line => line.trim()).find(Boolean);
+      return link || email || phone || firstLine || screenshotInfo?.name || "Unknown source";
+    }
+
+    function localReportTargets(text) {
+      const targets = ["ZAPP'EM shared blocklist"];
+      if (/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i.test(text) || /gmail|google/i.test(text)) targets.push("Gmail phishing/spam report");
+      if (/\+?\d[\d\s().-]{7,}\d/.test(text)) targets.push("Carrier spam report via 7726");
+      if (/apple|icloud/i.test(text)) targets.push("Apple phishing report");
+      if (/facebook|messenger|meta/i.test(text)) targets.push("Facebook/Meta report");
+      if (/https?:\/\/|www\./i.test(text)) targets.push("URL/domain abuse report");
+      return targets;
+    }
+
+    function renderReportTargets(targets) {
+      reportTargets.innerHTML = targets.map(target => `<span class="pill">${target}</span>`).join("");
+    }
+
+    function renderDecision(mode, detail = "") {
+      autoBlockCard.classList.toggle("blocked", mode === "auto_block");
+      autoBlockCard.classList.toggle("active", mode === "auto_block");
+      needsZapCard.classList.toggle("active", mode !== "auto_block");
+
+      if (mode === "auto_block") {
+        decisionTitle.textContent = "Known scam: block before inbox";
+        autoBlockCard.querySelector("p").textContent = detail || "This matches the shared blocklist and should be quarantined quietly.";
+        needsZapCard.querySelector("p").textContent = "No user tap needed unless they want to inspect details.";
+        return;
+      }
+
+      if (mode === "watch") {
+        decisionTitle.textContent = "New scam: ZAP teaches the wall";
+        autoBlockCard.querySelector("p").textContent = "Not enough confirmations yet for silent quarantine.";
+        needsZapCard.querySelector("p").textContent = detail || "User hits ZAP, then the shared blocklist gets stronger.";
+        return;
+      }
+
+      if (mode === "review") {
+        decisionTitle.textContent = "Review needed: possible false positive";
+        autoBlockCard.classList.remove("blocked");
+        autoBlockCard.classList.add("active");
+        needsZapCard.classList.add("active");
+        autoBlockCard.querySelector("p").textContent = "Do not silently block until reviewed.";
+        needsZapCard.querySelector("p").textContent = detail || "A user marked this as not a scam. Confidence should be lowered.";
+        return;
+      }
+
+      decisionTitle.textContent = "Waiting for scan";
+      autoBlockCard.querySelector("p").textContent = "Auto-block or quarantine before the inbox.";
+      needsZapCard.querySelector("p").textContent = "User sees it, hits ZAP, and teaches the shared blocklist.";
+    }
+
+    async function scan() {
+      const text = message.value.trim();
+      const hits = checks.filter(check => check.test(text));
+      const screenshotBonus = screenshotInfo ? 12 : 0;
+      const total = Math.min(100, hits.reduce((sum, check) => sum + check.weight, screenshotBonus));
+
+      meter.style.setProperty("--score", total);
+      score.textContent = `${total}%`;
+
+      if (!text) {
+        if (screenshotInfo) {
+          verdict.textContent = "Screenshot captured";
+          reasons.innerHTML = `
+            <li>Screenshot attached: ${screenshotInfo.name}</li>
+            <li>Real app step: OCR reads sender, subject, body, links, and logo clues from the image.</li>
+            <li>Prototype step: paste any visible text too for a stronger score.</li>
+          `;
+          status.textContent = "Screenshot loaded. Paste any visible text too, then hit ZAP.";
+          return { total, hits: [{ label: "Screenshot evidence attached" }] };
+        }
+
+        verdict.textContent = "Nothing to scan";
+        reasons.innerHTML = "<li>Paste a message, link, sender, or screenshot text first.</li>";
+        status.textContent = "Nothing to scan yet. Paste the scam first.";
+        renderDecision("idle");
+        return { total: 0, hits: [] };
+      }
+
+      verdict.textContent = total >= 70 ? "Scam smell: strong" : total >= 38 ? "Sketchy enough to zap" : "Not enough evidence yet";
+      const screenshotReason = screenshotInfo ? [`<li>Screenshot evidence attached: ${screenshotInfo.name}</li>`] : [];
+      reasons.innerHTML = hits.length || screenshotInfo
+        ? [...screenshotReason, ...hits.map(hit => `<li>${hit.label}</li>`)].join("")
+        : "<li>No strong scam markers found. Still check the official app or website before paying anything.</li>";
+      status.textContent = `Scan complete: ${total}% scam score. ${hits.length} warning sign${hits.length === 1 ? "" : "s"} found.`;
+      renderReportTargets(localReportTargets(text));
+      renderDecision(total >= 70 ? "watch" : "idle", total >= 70 ? "High-confidence scam. Hit ZAP to save and turn this pattern into protection." : "Not enough signal for auto-block yet.");
+
+      try {
+        const shared = await apiPost("/api/check", payload());
+        if (shared.action === "auto_block") {
+          verdict.textContent = "Known scam: should be blocked";
+          status.textContent = `Known scam fingerprint. ZAPP'EM would quarantine this before the inbox. Confirmed ${shared.confirmations} time${shared.confirmations === 1 ? "" : "s"}.`;
+          reasons.innerHTML = shared.reasons.map(reason => `<li>${reason}</li>`).join("");
+          renderDecision("auto_block", `Confirmed ${shared.confirmations} time${shared.confirmations === 1 ? "" : "s"} by the shared blocklist.`);
+        } else {
+          renderDecision("watch", "Not known enough to hide silently yet. Hit ZAP to add the confirmation.");
+        }
+        renderReportTargets(shared.reportTargets || localReportTargets(text));
+        return { total: shared.score, hits, shared };
+      } catch {
+        return { total, hits };
+      }
+    }
+
+    async function zap() {
+      const text = message.value.trim();
+      if (!text && !screenshotInfo) {
+        scan();
+        return;
+      }
+
+      const result = await scan();
+      const item = {
+        id: crypto.randomUUID(),
+        target: fingerprint(text),
+        score: result.total,
+        createdAt: new Date().toLocaleString(),
+        snippet: text.slice(0, 180) || `Screenshot: ${screenshotInfo?.name || "attached"}`
+      };
+
+      const items = [item, ...getStoredList()].slice(0, 25);
+      setStoredList(items);
+      renderBlocklist();
+      renderStats();
+
+      zapScreen.classList.remove("active");
+      void zapScreen.offsetWidth;
+      zapScreen.classList.add("active");
+      zapCopy.textContent = "ZAPPED. TRY SOMEBODY ELSE.";
+      zapSub.textContent = `Filed ${item.target} with a ${item.score}% scam score. Local list updated. Shared blocklist would update everybody next.`;
+      status.textContent = `ZAPPED: ${item.target}. Blocklist updated and your Zapper Score went up.`;
+
+      try {
+        const saved = await apiPost("/api/zap", payload());
+        zapSub.textContent = saved.action === "auto_block"
+          ? `Shared blocklist updated. This fingerprint is now auto-block ready after ${saved.confirmations} confirmation${saved.confirmations === 1 ? "" : "s"}.`
+          : "Shared blocklist updated. One more matching ZAP turns this into an auto-block pattern.";
+        status.textContent = saved.action === "auto_block"
+          ? `REAL ZAP SAVED: ${saved.target}. Next matching scam should be quarantined before the inbox.`
+          : `REAL ZAP SAVED: ${saved.target}. Watching for the next match.`;
+        renderDecision(saved.action === "auto_block" ? "auto_block" : "watch", saved.action === "auto_block"
+          ? `This fingerprint is now ready for silent quarantine.`
+          : "Saved as a watch pattern. Another matching ZAP can graduate it to auto-block.");
+        renderReportTargets(saved.reportTargets || localReportTargets(text));
+        await renderServerStats();
+      } catch {
+        status.textContent = `ZAPPED locally: ${item.target}. Start the v0.6 server to update the shared blocklist.`;
+        renderDecision("watch", "Local demo saved. Real shared protection needs the backend running.");
+      }
+    }
+
+    async function markNotScam() {
+      const text = message.value.trim();
+      if (!text && !screenshotInfo) {
+        status.textContent = "Nothing to correct yet. Add the message or screenshot first.";
+        renderDecision("idle");
+        return;
+      }
+
+      const target = fingerprint(text);
+      renderDecision("review", "User correction received. This should not be auto-blocked until reviewed.");
+      status.textContent = `Marked for review: ${target}. ZAPP'EM would lower confidence instead of blocking it blindly.`;
+      zapCopy.textContent = "REVIEW REQUESTED";
+      zapSub.textContent = "This is how users protect real messages from getting pinned as scams.";
+
+      try {
+        const saved = await apiPost("/api/not-scam", {
+          ...payload(),
+          reason: "User recognized this as legitimate"
+        });
+        status.textContent = `NOT A SCAM saved: ${saved.target}. This fingerprint is now in review.`;
+        renderDecision("review", `${saved.notScamVotes} not-a-scam vote${saved.notScamVotes === 1 ? "" : "s"} recorded.`);
+        await renderServerStats();
+        await renderReviewQueue();
+      } catch {
+        status.textContent = `NOT A SCAM marked locally for ${target}. Start the v0.6 server to save corrections.`;
+      }
+    }
+
+    function renderBlocklist() {
+      const items = getStoredList();
+      if (!items.length) {
+        blocklist.innerHTML = '<p class="empty">No scammers zapped yet. Peaceful inbox starts here.</p>';
+        return;
+      }
+
+      blocklist.innerHTML = items.map(item => `
+        <div class="blocked-item">
+          <strong>${item.target}</strong>
+          <span>${item.score}% scam score | ${item.createdAt}</span>
+          <div style="margin-top: 6px; color: var(--muted);">${item.snippet}</div>
+        </div>
+      `).join("");
+    }
+
+    function renderStats() {
+      const items = getStoredList();
+      const scoreTotal = items.reduce((sum, item) => sum + 10 + Math.round(item.score / 5), 0);
+      zapCount.textContent = items.length;
+      zapperScore.textContent = scoreTotal;
+      protectedCount.textContent = items.length ? Math.min(999, items.length * 7) : 0;
+    }
+
+    async function renderServerStats() {
+      try {
+        const stats = await apiGet("/api/stats");
+        zapCount.textContent = stats.totalZaps;
+        zapperScore.textContent = stats.uniqueScams * 25 + stats.totalZaps * 10;
+        protectedCount.textContent = stats.autoBlockReady * 100;
+
+        if (stats.topScams.length) {
+          blocklist.innerHTML = stats.topScams.map(item => `
+            <div class="blocked-item">
+              <strong>${item.action === "auto_block" ? "AUTO-BLOCK READY" : "WATCHING"}: ${item.target}</strong>
+              <span>${item.score}% scam score | ${item.confirmations} confirmation${item.confirmations === 1 ? "" : "s"}</span>
+              <div style="margin-top: 6px; color: var(--muted);">${item.reasons.join(", ")}</div>
+            </div>
+          `).join("");
+        }
+        await renderReviewQueue();
+      } catch {
+        renderStats();
+      }
+    }
+
+    function loadScreenshot(file) {
+      if (!file || !file.type.startsWith("image/")) {
+        status.textContent = "That was not an image. Add a screenshot file.";
+        return;
+      }
+
+      screenshotInfo = {
+        name: file.name || "pasted-screenshot.png",
+        size: Math.round(file.size / 1024)
+      };
+
+      const reader = new FileReader();
+      reader.onload = event => {
+        screenshotPreview.src = event.target.result;
+        screenshotPreview.style.display = "block";
+        status.textContent = `Screenshot loaded: ${screenshotInfo.name}. Real app would OCR it; paste visible text for this prototype.`;
+        scan();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    scanButton.addEventListener("click", async event => {
+      await scan();
+    });
+    zapButton.addEventListener("click", async event => {
+      await zap();
+    });
+    notScamButton.addEventListener("click", async event => {
+      await markNotScam();
+    });
+    screenshotInput.addEventListener("change", event => loadScreenshot(event.target.files[0]));
+    dropZone.addEventListener("dragover", event => {
+      event.preventDefault();
+      dropZone.classList.add("dragover");
+    });
+    dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
+    dropZone.addEventListener("drop", event => {
+      event.preventDefault();
+      dropZone.classList.remove("dragover");
+      loadScreenshot(event.dataTransfer.files[0]);
+    });
+    document.addEventListener("paste", event => {
+      const item = [...event.clipboardData.items].find(entry => entry.type.startsWith("image/"));
+      if (item) loadScreenshot(item.getAsFile());
+    });
+    clearButton.addEventListener("click", () => {
+      setStoredList([]);
+      renderBlocklist();
+      renderStats();
+      zapCopy.textContent = "List cleared";
+      zapSub.textContent = "Fresh start. The button is still ready.";
+      status.textContent = "Zapped list cleared. Ready for the next scam.";
+    });
+
+    renderBlocklist();
+    renderStats();
+    renderServerStats();
+    renderReviewQueue();
+    renderDecision("idle");
+    scan();
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").catch(() => {});
+    }
+  </script>
+</body>
+</html>

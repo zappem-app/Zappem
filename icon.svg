@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#08090c"/>
+  <path d="M79 302 244 44l-29 174h218L268 468l31-166z" fill="#ff3131"/>
+  <path d="M120 330 252 124l-20 120h160L260 444l22-114z" fill="#ffd029"/>
+  <text x="256" y="284" text-anchor="middle" font-family="Arial, sans-serif" font-size="86" font-weight="900" fill="#08090c">ZAP</text>
+</svg>
