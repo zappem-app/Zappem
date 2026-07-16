@@ -1090,11 +1090,29 @@ Your account has been inactive and over-limit. If you do not renew your storage 
       };
 
       const reader = new FileReader();
-      reader.onload = event => {
-        screenshotPreview.src = event.target.result;
-        screenshotPreview.style.display = "block";
-        status.textContent = `Screenshot loaded: ${screenshotInfo.name}. Real app would OCR it; paste visible text for this prototype.`;
-        scan();
+      reader.onload = async event => {
+      screenshotPreview.src = event.target.result;
+screenshotPreview.style.display = "block";
+
+status.textContent = "Reading screenshot...";
+
+try {
+  const result = await Tesseract.recognize(file, "eng");
+  const extractedText = result.data.text.trim();
+
+  if (extractedText) {
+    message.value = extractedText;
+    status.textContent = "Screenshot text found. Scanning...";
+    await scan();
+  } else {
+    status.textContent = "No readable text found in screenshot.";
+    await scan();
+  }
+} catch (error) {
+  console.error(error);
+  status.textContent = "OCR failed. You can still paste text manually.";
+  await scan();
+}
       };
       reader.readAsDataURL(file);
     }
@@ -1143,6 +1161,7 @@ Your account has been inactive and over-limit. If you do not renew your storage 
       navigator.serviceWorker.register("/sw.js").catch(() => {});
     }
   </script>
+ <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script src="/zappem-mobile-fix.js"></script>
 </body>
 </html>
